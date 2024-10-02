@@ -50,7 +50,7 @@ const register = async (req: Request, res: Response) => {
       const referrer = await User.findOne({ telegramId: referralTelegramId });
       if (referrer) {
         referrer.referrals = (referrer.referrals || 0) + 1;
-        referrer.points = (referrer.points || 0) + 100;
+        referrer.points = (Number(referrer.points) || 0) + 200;
         await referrer.save();
       }
     }

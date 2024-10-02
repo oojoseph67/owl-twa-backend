@@ -9,8 +9,10 @@ const updateReward = async (req: Request, res: Response) => {
 
   const { telegramId, points } = body;
 
-  if (!telegramId || !points) {
-    throw new BadRequestError("Provide telegramId and points");
+  // Ensure points is a valid number
+  const pointsToAdd = Number(points);
+  if (isNaN(pointsToAdd)) {
+    throw new BadRequestError("Points must be a valid number");
   }
 
   const userCheck = await User.findOne({ telegramId });
@@ -18,7 +20,7 @@ const updateReward = async (req: Request, res: Response) => {
     throw new Error("User doesnt exists");
   }
 
-  const newPoints = Number(userCheck.points) + Number(points);
+  const newPoints = Number(userCheck.points) + pointsToAdd;
   const userCheckUpdate = await User.findOneAndUpdate(
     { telegramId },
     { points: newPoints },
