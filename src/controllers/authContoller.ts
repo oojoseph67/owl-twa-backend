@@ -64,4 +64,37 @@ const register = async (req: Request, res: Response) => {
   }
 };
 
-export { register };
+const addWalletAddress = async (req: Request, res: Response) => {
+  const { body } = req;
+
+  console.log({ body });
+
+  const { telegramId, walletAddress } = body;
+
+  if (!walletAddress || !telegramId) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ error: "Missing required fields" });
+  }
+
+  const telegramIdCheck = await User.findOne({ telegramId: body.telegramId });
+  if (!telegramIdCheck) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ error: "User does not exist" });
+  }
+
+  const userData: Partial<IUser> = {
+    telegramId,
+    walletAddress,
+  };
+
+  const user = await User.findOneAndUpdate({ telegramId }, userData, {
+    new: true,
+    upsert: true,
+  });
+
+  res.status(StatusCodes.OK).json({ user });
+};
+
+export { register, addWalletAddress };

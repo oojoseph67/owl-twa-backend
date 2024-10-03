@@ -17,8 +17,7 @@ const UserSchema: Schema = new Schema({
   telegramId: { type: String, required: true, unique: true },
   walletAddress: {
     type: String,
-    unique: true,
-    sparse: true,
+    default: null,
   },
   profilePicture: { type: String, default: null },
   points: { type: Number, default: 0 },
