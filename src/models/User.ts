@@ -17,9 +17,9 @@ const UserSchema: Schema = new Schema({
   telegramId: { type: String, required: true, unique: true },
   walletAddress: {
     type: String,
-    default: null,
+    default: "",
   },
-  profilePicture: { type: String, default: null },
+  profilePicture: { type: String, default: "" },
   points: { type: Number, default: 0 },
   diamonds: { type: Number, default: 0 },
   lastClaimDate: { type: Date, default: null },
